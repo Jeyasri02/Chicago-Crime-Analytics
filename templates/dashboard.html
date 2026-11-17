@@ -1,0 +1,429 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     Dashboard Header / Hero
+===================================================== -->
+
+<div class="dashboard-hero">
+
+    <div class="dashboard-hero-content">
+
+        <div>
+            <span class="dashboard-label">
+                CRIME ANALYTICS
+            </span>
+
+            <h1>
+                Chicago Crime Analytics
+            </h1>
+
+            <p>
+                Analyze crime patterns, manage crime records,
+                and explore insights from the Chicago Police Department dataset.
+            </p>
+        </div>
+
+    </div>
+
+
+    {% if total_crimes == 0 %}
+
+        <div class="dashboard-status status-warning">
+
+            <div>
+                <strong>Dataset Not Loaded</strong>
+
+                <p>
+                    Crime data has not been processed yet.
+                </p>
+            </div>
+
+            <a
+                href="{{ url_for('main.load_data') }}"
+                class="btn btn-primary"
+            >
+                Process Dataset
+            </a>
+
+        </div>
+
+
+    {% else %}
+
+        <div class="dashboard-status status-success">
+
+            <div>
+                <strong>Dataset Ready</strong>
+
+                <p>
+                    Crime data is successfully loaded into the database.
+                </p>
+            </div>
+
+            <a
+                href="{{ url_for('main.analysis') }}"
+                class="btn btn-primary"
+            >
+                View Analysis
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =====================================================
+     Statistics
+===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="section-heading">
+
+        <div>
+            <span class="section-label">
+                OVERVIEW
+            </span>
+
+            <h2>
+                Crime Statistics
+            </h2>
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- Total Crimes -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-icon">
+                    CR
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Total Crimes
+                    </span>
+
+                    <strong>
+                        {{ "{:,}".format(total_crimes) }}
+                    </strong>
+
+                    <small>
+                        Total recorded incidents
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Crime Types -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-icon">
+                    CT
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Crime Types
+                    </span>
+
+                    <strong>
+                        {{ crime_types }}
+                    </strong>
+
+                    <small>
+                        Unique crime categories
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Arrests -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-icon">
+                    AR
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Arrests
+                    </span>
+
+                    <strong>
+                        {{ "{:,}".format(arrests) }}
+                    </strong>
+
+                    <small>
+                        Recorded arrests
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Arrest Rate -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-icon">
+                    %
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Arrest Rate
+                    </span>
+
+                    <strong>
+                        {{ arrest_rate }}%
+                    </strong>
+
+                    <small>
+                        Percentage of arrests
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     Crime Records / CRUD
+===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-label">
+                RECORD MANAGEMENT
+            </span>
+
+            <h2>
+                Crime Records
+            </h2>
+
+            <p>
+                Create, view, update, and delete crime records
+                stored in the database.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- Create -->
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-action-card">
+
+                <div class="action-card-top">
+
+                    <div class="action-icon action-create">
+                        +
+                    </div>
+
+                    <span class="action-tag">
+                        CREATE
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    Add Crime Record
+                </h3>
+
+                <p>
+                    Add a new crime incident to the database
+                    using the crime record form.
+                </p>
+
+
+                <a
+                    href="{{ url_for('main.add_crime') }}"
+                    class="btn btn-success dashboard-action-btn"
+                >
+                    Add Crime Record
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Read -->
+
+        <div class="col-lg-6">
+
+            <div class="dashboard-action-card">
+
+                <div class="action-card-top">
+
+                    <div class="action-icon action-read">
+                        ≡
+                    </div>
+
+                    <span class="action-tag">
+                        READ
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    View Crime Records
+                </h3>
+
+                <p>
+                    Browse all crime records stored in the database
+                    and manage existing records.
+                </p>
+
+
+                <a
+                    href="{{ url_for('main.crime_records') }}"
+                    class="btn btn-primary dashboard-action-btn"
+                >
+                    View Crime Records
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- CRUD Information -->
+
+    <div class="crud-info-box">
+
+        <div class="crud-info-icon">
+            i
+        </div>
+
+        <div>
+
+            <strong>
+                CRUD Operations
+            </strong>
+
+            <p>
+                Create new records using
+                <strong>Add Crime Record</strong>.
+                View, update, and delete existing records using
+                <strong>View Crime Records</strong>.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     Crime Analysis
+===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="analysis-card">
+
+        <div class="analysis-content">
+
+            <span class="section-label">
+                DATA ANALYSIS
+            </span>
+
+            <h2>
+                Explore Crime Insights
+            </h2>
+
+            <p>
+                Explore crime trends, arrest rates, common crime
+                categories, IUCR codes, FBI codes, locations,
+                community areas, monthly patterns, and hourly patterns.
+            </p>
+
+
+            <a
+                href="{{ url_for('main.analysis') }}"
+                class="btn btn-primary dashboard-action-btn"
+            >
+                View Analysis
+            </a>
+
+        </div>
+
+
+        <div class="analysis-decoration">
+            <div class="analysis-bar bar-one"></div>
+            <div class="analysis-bar bar-two"></div>
+            <div class="analysis-bar bar-three"></div>
+            <div class="analysis-bar bar-four"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

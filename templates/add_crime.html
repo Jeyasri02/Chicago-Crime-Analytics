@@ -1,0 +1,573 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Add Crime Record
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     Page Header
+===================================================== -->
+
+<div class="crud-header">
+
+    <div>
+
+        <h2>
+            Add Crime Record
+        </h2>
+
+        <p class="text-muted mb-0">
+            Create a new crime record in the database.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <a
+            href="{{ url_for('main.crime_records') }}"
+            class="btn btn-secondary"
+        >
+            Back to Crime Records
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     Add Crime Form
+===================================================== -->
+
+<div class="crud-form">
+
+    <form
+        method="POST"
+        action="{{ url_for('main.add_crime') }}"
+    >
+
+        <div class="row g-3">
+
+
+            <!-- Case Number -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="case_number"
+                    class="form-label"
+                >
+                    Case Number
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="case_number"
+                    name="case_number"
+                    placeholder="Enter case number"
+                >
+
+            </div>
+
+
+            <!-- Date -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="date"
+                    class="form-label"
+                >
+                    Crime Date
+                </label>
+
+                <input
+                    type="datetime-local"
+                    class="form-control"
+                    id="date"
+                    name="date"
+                >
+
+            </div>
+
+
+            <!-- Block -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="block"
+                    class="form-label"
+                >
+                    Block
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="block"
+                    name="block"
+                    placeholder="Enter block"
+                >
+
+            </div>
+
+
+            <!-- IUCR -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="iucr"
+                    class="form-label"
+                >
+                    IUCR Code
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="iucr"
+                    name="iucr"
+                    placeholder="Enter IUCR code"
+                >
+
+            </div>
+
+
+            <!-- Primary Type -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="primary_type"
+                    class="form-label"
+                >
+                    Primary Crime Type
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="primary_type"
+                    name="primary_type"
+                    placeholder="Example: THEFT"
+                >
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="description"
+                    class="form-label"
+                >
+                    Description
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    name="description"
+                    placeholder="Enter crime description"
+                >
+
+            </div>
+
+
+            <!-- Location Description -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="location_desc"
+                    class="form-label"
+                >
+                    Location Description
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="location_desc"
+                    name="location_desc"
+                    placeholder="Example: STREET"
+                >
+
+            </div>
+
+
+            <!-- Arrest -->
+
+            <div class="col-md-3">
+
+                <label
+                    for="arrest"
+                    class="form-label"
+                >
+                    Arrest
+                </label>
+
+                <select
+                    class="form-select"
+                    id="arrest"
+                    name="arrest"
+                >
+
+                    <option value="false" selected>
+                        No
+                    </option>
+
+                    <option value="true">
+                        Yes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Domestic -->
+
+            <div class="col-md-3">
+
+                <label
+                    for="domestic"
+                    class="form-label"
+                >
+                    Domestic
+                </label>
+
+                <select
+                    class="form-select"
+                    id="domestic"
+                    name="domestic"
+                >
+
+                    <option value="false" selected>
+                        No
+                    </option>
+
+                    <option value="true">
+                        Yes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Beat Number -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="beat_num"
+                    class="form-label"
+                >
+                    Beat Number
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="beat_num"
+                    name="beat_num"
+                    placeholder="Enter beat number"
+                >
+
+            </div>
+
+
+            <!-- District Name -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="district_name"
+                    class="form-label"
+                >
+                    District Name
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="district_name"
+                    name="district_name"
+                    placeholder="Enter district name"
+                >
+
+            </div>
+
+
+            <!-- Ward Number -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="ward_no"
+                    class="form-label"
+                >
+                    Ward Number
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="ward_no"
+                    name="ward_no"
+                    placeholder="Enter ward number"
+                >
+
+            </div>
+
+
+            <!-- Community Code -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="community_code"
+                    class="form-label"
+                >
+                    Community Code
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="community_code"
+                    name="community_code"
+                    placeholder="Enter community code"
+                >
+
+            </div>
+
+
+            <!-- FBI Code -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="fbi_code"
+                    class="form-label"
+                >
+                    FBI Code
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="fbi_code"
+                    name="fbi_code"
+                    placeholder="Enter FBI code"
+                >
+
+            </div>
+
+
+            <!-- Year -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="year"
+                    class="form-label"
+                >
+                    Year
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="year"
+                    name="year"
+                    placeholder="Example: 2016"
+                >
+
+            </div>
+
+
+            <!-- X Coordinate -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="x_coordinate"
+                    class="form-label"
+                >
+                    X Coordinate
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="x_coordinate"
+                    name="x_coordinate"
+                    placeholder="Enter X coordinate"
+                >
+
+            </div>
+
+
+            <!-- Y Coordinate -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="y_coordinate"
+                    class="form-label"
+                >
+                    Y Coordinate
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="y_coordinate"
+                    name="y_coordinate"
+                    placeholder="Enter Y coordinate"
+                >
+
+            </div>
+
+
+            <!-- Latitude -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="latitude"
+                    class="form-label"
+                >
+                    Latitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="latitude"
+                    name="latitude"
+                    placeholder="Enter latitude"
+                >
+
+            </div>
+
+
+            <!-- Longitude -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="longitude"
+                    class="form-label"
+                >
+                    Longitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="longitude"
+                    name="longitude"
+                    placeholder="Enter longitude"
+                >
+
+            </div>
+
+
+            <!-- Date of Update -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="date_of_update"
+                    class="form-label"
+                >
+                    Date of Update
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="date_of_update"
+                    name="date_of_update"
+                    placeholder="Enter update date"
+                >
+
+            </div>
+
+
+            <!-- Location -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="location"
+                    class="form-label"
+                >
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="location"
+                    name="location"
+                    placeholder="Enter location"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             Form Buttons
+        ================================================== -->
+
+        <div class="mt-4">
+
+            <button
+    type="submit"
+    class="btn btn-success"
+    onclick="console.log('CREATE BUTTON CLICKED');"
+>
+    Create Crime Record
+</button>
+
+
+            <a
+                href="{{ url_for('main.crime_records') }}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+
+{% endblock %}
+

@@ -1,0 +1,619 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}
+Edit Crime Record
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     Page Header
+===================================================== -->
+
+<div class="crud-header">
+
+    <div>
+
+        <h2>
+            Edit Crime Record
+        </h2>
+
+        <p class="text-muted mb-0">
+            Update the selected crime record.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <a
+            href="{{ url_for('main.crime_records') }}"
+            class="btn btn-secondary"
+        >
+            Back to Crime Records
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     Edit Crime Form
+===================================================== -->
+
+<div class="crud-form">
+
+    <form
+        method="POST"
+        action="{{ url_for(
+            'main.edit_crime',
+            crime_id=crime.id
+        ) }}"
+    >
+
+        <div class="row g-3">
+
+
+            <!-- ID -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="id"
+                    class="form-label"
+                >
+                    Crime ID
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="id"
+                    value="{{ crime.id }}"
+                    readonly
+                >
+
+            </div>
+
+
+            <!-- Case Number -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="case_number"
+                    class="form-label"
+                >
+                    Case Number
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="case_number"
+                    name="case_number"
+                    value="{{ crime.case_number or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Date -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="date"
+                    class="form-label"
+                >
+                    Crime Date
+                </label>
+
+                <input
+                    type="datetime-local"
+                    class="form-control"
+                    id="date"
+                    name="date"
+                    value="{% if crime.date %}{{ crime.date.strftime('%Y-%m-%dT%H:%M') }}{% endif %}"
+                >
+
+            </div>
+
+
+            <!-- Block -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="block"
+                    class="form-label"
+                >
+                    Block
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="block"
+                    name="block"
+                    value="{{ crime.block or '' }}"
+                >
+
+            </div>
+
+
+            <!-- IUCR -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="iucr"
+                    class="form-label"
+                >
+                    IUCR Code
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="iucr"
+                    name="iucr"
+                    value="{{ crime.iucr or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Primary Type -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="primary_type"
+                    class="form-label"
+                >
+                    Primary Crime Type
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="primary_type"
+                    name="primary_type"
+                    value="{{ crime.primary_type or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="description"
+                    class="form-label"
+                >
+                    Description
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    name="description"
+                    value="{{ crime.description or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Location Description -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="location_desc"
+                    class="form-label"
+                >
+                    Location Description
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="location_desc"
+                    name="location_desc"
+                    value="{{ crime.location_desc or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Arrest -->
+
+            <div class="col-md-3">
+
+                <label
+                    for="arrest"
+                    class="form-label"
+                >
+                    Arrest
+                </label>
+
+                <select
+                    class="form-select"
+                    id="arrest"
+                    name="arrest"
+                >
+
+                    <option
+                        value="false"
+                        {% if crime.arrest != true %}
+                            selected
+                        {% endif %}
+                    >
+                        No
+                    </option>
+
+                    <option
+                        value="true"
+                        {% if crime.arrest == true %}
+                            selected
+                        {% endif %}
+                    >
+                        Yes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Domestic -->
+
+            <div class="col-md-3">
+
+                <label
+                    for="domestic"
+                    class="form-label"
+                >
+                    Domestic
+                </label>
+
+                <select
+                    class="form-select"
+                    id="domestic"
+                    name="domestic"
+                >
+
+                    <option
+                        value="false"
+                        {% if crime.domestic != true %}
+                            selected
+                        {% endif %}
+                    >
+                        No
+                    </option>
+
+                    <option
+                        value="true"
+                        {% if crime.domestic == true %}
+                            selected
+                        {% endif %}
+                    >
+                        Yes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Beat Number -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="beat_num"
+                    class="form-label"
+                >
+                    Beat Number
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="beat_num"
+                    name="beat_num"
+                    value="{{ crime.beat_num or '' }}"
+                >
+
+            </div>
+
+
+            <!-- District Name -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="district_name"
+                    class="form-label"
+                >
+                    District Name
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="district_name"
+                    name="district_name"
+                    value="{{ crime.district_name or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Ward Number -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="ward_no"
+                    class="form-label"
+                >
+                    Ward Number
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="ward_no"
+                    name="ward_no"
+                    value="{{ crime.ward_no or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Community Code -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="community_code"
+                    class="form-label"
+                >
+                    Community Code
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="community_code"
+                    name="community_code"
+                    value="{{ crime.community_code or '' }}"
+                >
+
+            </div>
+
+
+            <!-- FBI Code -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="fbi_code"
+                    class="form-label"
+                >
+                    FBI Code
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="fbi_code"
+                    name="fbi_code"
+                    value="{{ crime.fbi_code or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Year -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="year"
+                    class="form-label"
+                >
+                    Year
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="year"
+                    name="year"
+                    value="{{ crime.year or '' }}"
+                >
+
+            </div>
+
+
+            <!-- X Coordinate -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="x_coordinate"
+                    class="form-label"
+                >
+                    X Coordinate
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="x_coordinate"
+                    name="x_coordinate"
+                    value="{{ crime.x_coordinate if crime.x_coordinate is not none else '' }}"
+                >
+
+            </div>
+
+
+            <!-- Y Coordinate -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="y_coordinate"
+                    class="form-label"
+                >
+                    Y Coordinate
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="y_coordinate"
+                    name="y_coordinate"
+                    value="{{ crime.y_coordinate if crime.y_coordinate is not none else '' }}"
+                >
+
+            </div>
+
+
+            <!-- Latitude -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="latitude"
+                    class="form-label"
+                >
+                    Latitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="latitude"
+                    name="latitude"
+                    value="{{ crime.latitude if crime.latitude is not none else '' }}"
+                >
+
+            </div>
+
+
+            <!-- Longitude -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="longitude"
+                    class="form-label"
+                >
+                    Longitude
+                </label>
+
+                <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="longitude"
+                    name="longitude"
+                    value="{{ crime.longitude if crime.longitude is not none else '' }}"
+                >
+
+            </div>
+
+
+            <!-- Date of Update -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="date_of_update"
+                    class="form-label"
+                >
+                    Date of Update
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="date_of_update"
+                    name="date_of_update"
+                    value="{{ crime.date_of_update or '' }}"
+                >
+
+            </div>
+
+
+            <!-- Location -->
+
+            <div class="col-md-6">
+
+                <label
+                    for="location"
+                    class="form-label"
+                >
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    id="location"
+                    name="location"
+                    value="{{ crime.location or '' }}"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             Form Buttons
+        ================================================== -->
+
+        <div class="mt-4">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Update Crime Record
+            </button>
+
+
+            <a
+                href="{{ url_for('main.crime_records') }}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+
+{% endblock %}
+```

@@ -1,0 +1,737 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Crime Analysis
+{% endblock %}
+
+
+{% block content %}
+
+
+{% if empty %}
+
+<div class="alert alert-warning">
+
+    No data is available.
+
+    Please make sure the crime CSV is present
+    inside the <code>data/</code> folder.
+
+</div>
+
+{% else %}
+
+
+<h1>
+    Crime Analysis
+</h1>
+
+
+<!-- =====================================================
+     KEY INSIGHTS
+====================================================== -->
+
+<div class="row mt-4 g-4">
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h6>
+                Total Crimes
+            </h6>
+
+            <h2>
+                {{ "{:,}".format(total) }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h6>
+                Arrest Rate
+            </h6>
+
+            <h2>
+                {{ arrest_rate }}%
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h6>
+                Most Common Crime
+            </h6>
+
+            <h4>
+                {{ most_common_crime }}
+            </h4>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="stat-card">
+
+            <h6>
+                Highest Crime Month
+            </h6>
+
+            <h2>
+                {{ highest_month }}
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CHARTS
+====================================================== -->
+
+<h2 class="section-title">
+    Visual Analysis
+</h2>
+
+
+<div class="row g-4">
+
+    {% set charts = [
+
+        (
+            "crime_by_year.png",
+            "Crime Trend Across Years"
+        ),
+
+        (
+            "top_crime_categories.png",
+            "Top 10 Crime Categories"
+        ),
+
+        (
+            "arrest_rate_by_year.png",
+            "Arrest Rate Across Years"
+        ),
+
+        (
+            "month_day_heatmap.png",
+            "Crime by Month and Day"
+        ),
+
+        (
+            "top_community_areas.png",
+            "Top Community Areas"
+        ),
+
+        (
+            "crime_by_hour.png",
+            "Crime by Hour"
+        ),
+
+        (
+            "community_area_boxplot.png",
+            "Community Area Outliers"
+        ),
+
+        (
+            "correlation_heatmap.png",
+            "Correlation Matrix"
+        )
+
+    ] %}
+
+
+    {% for image, title in charts %}
+
+    <div class="col-lg-6">
+
+        <div class="card">
+
+            <div class="card-header fw-bold">
+
+                {{ title }}
+
+            </div>
+
+            <div class="card-body">
+
+                <img
+    src="{{ url_for(
+        'static',
+        filename='charts/' + image
+    ) }}"
+    alt="{{ title }}"
+    class="analysis-chart"
+    onerror="this.style.display='none';"
+>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- =====================================================
+     TOP CRIMES
+====================================================== -->
+
+<div class="card mt-5">
+
+    <div class="card-header">
+
+        Top 10 Crime Categories
+
+    </div>
+
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Crime Type
+                    </th>
+
+                    <th>
+                        Count
+                    </th>
+
+                    <th>
+                        Percentage
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for row in categories %}
+
+                <tr>
+
+                    <td>
+                        {{ row.primary_type }}
+                    </td>
+
+                    <td>
+                        {{ "{:,}".format(
+                            row.crime_count
+                        ) }}
+                    </td>
+
+                    <td>
+                        {{ row.percentage }}%
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     IUCR
+====================================================== -->
+
+<div class="card mt-4">
+
+    <div class="card-header">
+
+        Top IUCR Codes
+
+    </div>
+
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        IUCR Code
+                    </th>
+
+                    <th>
+                        Crime Count
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for row in iucr %}
+
+                <tr>
+
+                    <td>
+                        {{ row.iucr }}
+                    </td>
+
+                    <td>
+                        {{ "{:,}".format(
+                            row.crime_count
+                        ) }}
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="2" class="text-center">
+                        No IUCR data available.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FBI
+====================================================== -->
+
+<div class="card mt-4">
+
+    <div class="card-header">
+
+        Top FBI Codes
+
+    </div>
+
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        FBI Code
+                    </th>
+
+                    <th>
+                        Crime Count
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for row in fbi %}
+
+                <tr>
+
+                    <td>
+                        {{ row.fbi_code }}
+                    </td>
+
+                    <td>
+                        {{ "{:,}".format(
+                            row.crime_count
+                        ) }}
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="2" class="text-center">
+                        No FBI code data available.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOP COMMUNITY AREAS
+====================================================== -->
+
+<div class="card mt-4">
+
+    <div class="card-header">
+
+        Top Community Areas
+
+    </div>
+
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Community Area
+                    </th>
+
+                    <th>
+                        Crime Count
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for row in communities %}
+
+                <tr>
+
+                    <!-- IMPORTANT:
+                         analysis.py returns community_code
+                         because models.py uses community_code
+                    -->
+
+                    <td>
+                        {{ row.community_code }}
+                    </td>
+
+                    <td>
+                        {{ "{:,}".format(
+                            row.crime_count
+                        ) }}
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="2" class="text-center">
+                        No community area data available.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOCATIONS
+====================================================== -->
+
+<div class="card mt-4">
+
+    <div class="card-header">
+
+        Most Common Crime Locations
+
+    </div>
+
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Location
+                    </th>
+
+                    <th>
+                        Crime Count
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for row in locations %}
+
+                <tr>
+
+                    <td>
+                        {{ row.location_desc }}
+                    </td>
+
+                    <td>
+                        {{ "{:,}".format(
+                            row.crime_count
+                        ) }}
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="2" class="text-center">
+                        No location data available.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ARREST BY YEAR
+====================================================== -->
+
+<div class="card mt-4">
+
+    <div class="card-header">
+
+        Arrest Rate by Year
+
+    </div>
+
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Year
+                    </th>
+
+                    <th>
+                        Arrest Rate
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for row in arrest_yearly %}
+
+                <tr>
+
+                    <td>
+                        {{ row.year }}
+                    </td>
+
+                    <td>
+                        {{ row.arrest_rate }}%
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="2" class="text-center">
+                        No arrest data available.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     COMMUNITY AREA OUTLIERS
+====================================================== -->
+
+<div class="card mt-4">
+
+    <div class="card-header">
+
+        Community Area Outliers using IQR
+
+    </div>
+
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Community Area
+                    </th>
+
+                    <th>
+                        Crime Count
+                    </th>
+
+                    <th>
+                        Lower Bound
+                    </th>
+
+                    <th>
+                        Upper Bound
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for row in outliers %}
+
+                <tr>
+
+                    <!-- IMPORTANT:
+                         analysis.py returns community_code
+                    -->
+
+                    <td>
+                        {{ row.community_code }}
+                    </td>
+
+                    <td>
+                        {{ "{:,}".format(
+                            row.crime_count
+                        ) }}
+                    </td>
+
+                    <td>
+                        {{ "%.2f"|format(
+                            row.lower_bound
+                        ) }}
+                    </td>
+
+                    <td>
+                        {{ "%.2f"|format(
+                            row.upper_bound
+                        ) }}
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center">
+                        No community area outliers found.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+{% endif %}
+
+
+{% endblock %}
